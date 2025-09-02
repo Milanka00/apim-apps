@@ -21,9 +21,9 @@ import { styled, useTheme } from '@mui/material/styles';
 import classNames from 'classnames';
 import Typography from '@mui/material/Typography';
 import { FormattedMessage } from 'react-intl';
-import { TagCloud } from 'react-tagcloud';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { Chip, Stack } from '@mui/material';
 
 const PREFIX = 'ApiTagCloud';
 
@@ -72,7 +72,6 @@ function ApiTagCloud(props) {
     const {
         custom: {
             tagWise: { key, active },
-            tagCloud: { colorOptions },
         },
     } = theme;
     const history = useHistory();
@@ -107,15 +106,23 @@ function ApiTagCloud(props) {
                 <Typography variant='h6' gutterBottom className={classNames(classes.filterTitle, 'apis-listing-tags-title')}>
                     <FormattedMessage defaultMessage='Tags' id='Apis.Listing.ApiTagCloud.title' />
                 </Typography>
-                <TagCloud
-                    minSize={14}
-                    maxSize={25}
-                    colorOptions={colorOptions}
-                    tags={apisTagWithoutGroups}
-                    shuffle={false}
+                <Stack
+                    direction='row'
+                    gap={1}
+                    flexWrap='wrap'
                     className={classes.clickablePointer}
-                    onClick={(tag) => handleOnClick(tag)}
-                />
+                >
+                    {apisTagWithoutGroups.map((tag) => (
+                        <Chip
+                            key={tag.value}
+                            label={tag.value}
+                            clickable
+                            color='default'
+                            size='small'
+                            onClick={() => handleOnClick(tag)}
+                        />
+                    ))}
+                </Stack>
             </Root>
         )
     );
