@@ -38,6 +38,7 @@ import Alert from 'AppComponents/Shared/Alert';
 import APIContext from 'AppComponents/Apis/Details/components/ApiContext';
 import { isRestricted } from 'AppData/AuthManager';
 import CircularProgress from '@mui/material/CircularProgress';
+import { getBasePath } from 'AppComponents/Shared/Utils';
 
 const PREFIX = 'TextEditor';
 
@@ -91,6 +92,7 @@ function TextEditor(props) {
 
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [isUpdating, setIsUpdating] = useState(false);
+    const [apiNotFound, setApiNotFound] = useState(false);
 
     const onEditorStateChange = (newEditorState) => {
         setEditorState(newEditorState);
@@ -104,6 +106,7 @@ function TextEditor(props) {
         }
         setOpen(!open);
     };
+
     const addContentToDoc = () => {
         const restAPI = isAPIProduct ? new APIProduct() : new Api();
         setIsUpdating(true);
@@ -148,7 +151,7 @@ function TextEditor(props) {
                 }
                 const { status } = error;
                 if (status === 404) {
-                    this.setState({ apiNotFound: true });
+                    setApiNotFound(true);
                 }
             });
     };
